@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lovrenčić Trans — Selidbe i prijevoz, Osijek</title>
+<meta name="description" content="Lovrenčić Trans — obrt za prijevoz i selidbe iz Osijeka. Selidbe stanova i kuća, prijevoz namještaja, kombi prijevoz, brza dostava.">
+<style>
+  :root{
+    color-scheme: dark;
+    --bg: #14181A;
+    --surface: #1B2124;
+    --surface-2: #20272A;
+    --line: #F4F1EA;
+    --text: #F4F1EA;
+    --text-dim: #9BA6AB;
+    --text-faint: #5C666A;
+    --accent: #2B6CFF;
+    --accent-strong: #6E97FF;
+    --accent-soft: rgba(43,108,255,0.16);
+    --shadow-c: var(--line);
+    --shadow-c-hover: var(--accent);
+    --radius-pill: 999px;
+    --gutter: clamp(16px, 5vw, 64px);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Work Sans", "Segoe UI", system-ui, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  h1,h2,h3{
+    font-family: "Archivo Black", "Work Sans", sans-serif;
+    line-height: 1.05;
+    margin: 0;
+    text-wrap: balance;
+  }
+  p{margin:0;}
+  a{color: inherit;}
+  img{max-width:100%;}
+  .mono{
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  .eyebrow{
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-strong);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .eyebrow::before{
+    content: "";
+    width: 22px;
+    height: 2px;
+    background: var(--accent);
+    display: inline-block;
+  }
+  .demo-tag{
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    color: var(--bg);
+    background: var(--accent-strong);
+    padding: 2px 7px;
+    border: 1px solid var(--line);
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
+  .wrap{
+    max-width: 1180px;
+    margin: 0 auto;
+    padding-inline: var(--gutter);
+  }
+
+  /* ---------- header ---------- */
+  .site-header{
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: var(--bg);
+    border-bottom: 3px solid var(--line);
+  }
+  .site-header .wrap{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-block: 16px;
+  }
+  .brand{
+    font-family: "Archivo Black", sans-serif;
+    font-size: clamp(1rem, 2.4vw, 1.35rem);
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+  }
+  .brand span{color: var(--accent-strong);}
+  .header-cta{
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    border: 3px solid var(--line);
+    background: var(--accent);
+    color: var(--bg);
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 11px 16px;
+    text-decoration: none;
+    box-shadow: none; /* namjerno bez sjene - izbjegava clipping na sticky headeru */
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .header-cta:hover{ background: var(--accent-strong); }
+  .header-cta svg{ width: 16px; height:16px; flex-shrink:0; }
+
+  /* ---------- generic section chrome ---------- */
+  section{
+    border-bottom: 3px solid var(--line);
+    position: relative;
+  }
+  section:last-of-type{ border-bottom: none; }
+  .section-inner{ padding-block: clamp(56px, 9vw, 108px); }
+
+  .reveal{
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.in-view{
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ---------- hero ---------- */
+  .hero{ overflow: clip; }
+  .hero-watermark{
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .hero-watermark span{
+    font-family: "Archivo Black", sans-serif;
+    font-size: clamp(6rem, 26vw, 15.5rem);
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(244,241,234,0.09);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    will-change: transform;
+  }
+  .hero .section-inner{
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 26px;
+  }
+  .hero h1{
+    font-size: clamp(2.1rem, 6.6vw, 4.4rem);
+    max-width: 15ch;
+  }
+  .hero-sub{
+    max-width: 52ch;
+    color: var(--text-dim);
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+  }
+  .hero-ctas{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 6px;
+  }
+  .btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 26px;
+    border: 3px solid var(--line);
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 600;
+    font-size: 0.88rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 6px 6px 0 var(--shadow-c);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  }
+  .btn svg{ width:18px; height:18px; flex-shrink:0; }
+  .btn:hover{
+    transform: translate(-3px,-3px);
+    box-shadow: 9px 9px 0 var(--shadow-c-hover);
+  }
+  .btn:active{
+    transform: translate(0,0);
+    box-shadow: 3px 3px 0 var(--shadow-c-hover);
+  }
+  .btn-primary{ background: var(--accent); color: var(--bg); }
+  .btn-primary:hover{ background: var(--accent-strong); }
+  .btn-ghost{ background: transparent; color: var(--text); }
+  .btn-ghost:hover{ background: var(--surface-2); }
+
+  .rating-badge{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 2px solid var(--line);
+    padding: 7px 14px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+  }
+  .rating-badge svg{ width:14px; height:14px; fill: var(--accent-strong); }
+
+  /* ---------- services ---------- */
+  .section-head{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 42px;
+  }
+  .section-head h2{
+    font-size: clamp(1.6rem, 3.6vw, 2.5rem);
+  }
+  .section-note{
+    color: var(--text-faint);
+    font-size: 0.86rem;
+    max-width: 62ch;
+  }
+  .service-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  .service-card{
+    background: var(--surface);
+    border: 3px solid var(--line);
+    padding: 24px;
+    box-shadow: 6px 6px 0 var(--shadow-c);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  }
+  .service-card:hover{
+    transform: translate(-4px,-4px);
+    box-shadow: 10px 10px 0 var(--shadow-c-hover);
+    background: var(--surface-2);
+  }
+  .service-card svg{
+    width: 34px; height: 34px;
+    stroke: var(--accent-strong);
+    fill: none;
+    stroke-width: 1.6;
+  }
+  .service-card h3{
+    font-family: "Work Sans", sans-serif;
+    font-weight: 700;
+    font-size: 1.06rem;
+  }
+  .service-card p{
+    color: var(--text-dim);
+    font-size: 0.92rem;
+  }
+
+  /* ---------- process ---------- */
+  .process-list{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 0;
+    border: 3px solid var(--line);
+  }
+  .process-step{
+    padding: 28px 24px;
+    border-right: 3px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .process-step:last-child{ border-right: none; }
+  .process-num{
+    font-family: "Archivo Black", sans-serif;
+    font-size: 2rem;
+    color: var(--accent-strong);
+  }
+  .process-step h3{
+    font-family: "Work Sans", sans-serif;
+    font-weight: 700;
+    font-size: 1.02rem;
+  }
+  .process-step p{ color: var(--text-dim); font-size: 0.9rem; }
+
+  /* ---------- trust ---------- */
+  .trust-banner{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 30px;
+  }
+  .trust-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    border: 3px solid var(--line);
+  }
+  .trust-tile{
+    padding: 30px 22px;
+    border-right: 3px solid var(--line);
+    text-align: center;
+  }
+  .trust-tile:last-child{ border-right: none; }
+  .trust-num{
+    font-family: "Archivo Black", sans-serif;
+    font-size: clamp(2rem, 4vw, 2.7rem);
+    color: var(--accent-strong);
+    font-variant-numeric: tabular-nums;
+  }
+  .trust-label{
+    margin-top: 6px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  /* ---------- coverage ---------- */
+  .coverage-wrap{
+    display: flex;
+    flex-direction: column;
+    gap: 34px;
+  }
+  .route-svg{ width: 100%; height: auto; display:block; }
+  .route-path{
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-dasharray: 9 10;
+    stroke-dashoffset: 1400;
+    transition: stroke-dashoffset 1.8s ease;
+  }
+  .route-path.in-view{ stroke-dashoffset: 0; }
+  .route-dot{ fill: var(--accent-strong); }
+  .chip-row{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .chip{
+    border: 2px solid var(--line);
+    padding: 9px 16px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    background: var(--surface);
+  }
+
+  /* ---------- contact ---------- */
+  .contact-grid{
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 28px;
+  }
+  @media (max-width: 720px){ .contact-grid{ grid-template-columns: 1fr; } }
+  .contact-card{
+    border: 3px solid var(--line);
+    background: var(--surface);
+    padding: 30px;
+    box-shadow: 6px 6px 0 var(--shadow-c);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .contact-row{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    border-bottom: 1px solid var(--text-faint);
+    padding-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .contact-row:last-child{ border-bottom: none; padding-bottom: 0; }
+  .contact-value{
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 1rem;
+  }
+  .contact-label{
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 4px;
+  }
+  .copy-btn{
+    border: 2px solid var(--line);
+    background: transparent;
+    color: var(--text);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 7px 12px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .copy-btn:hover{ background: var(--accent); color: var(--bg); }
+  .copy-btn[data-copied="true"]{ background: var(--accent-strong); color: var(--bg); }
+  .contact-ctas{ display:flex; flex-direction:column; gap:14px; }
+  .contact-ctas .btn{ justify-content:center; }
+  .hours-card{
+    border: 3px solid var(--line);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .hours-row{ display:flex; justify-content:space-between; font-size:0.92rem; color: var(--text-dim); }
+  .hours-row b{ color: var(--text); font-weight: 600; }
+
+  footer{ }
+  .footer-inner{
+    padding-block: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+  }
+  .footer-note{
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    color: var(--text-faint);
+    max-width: 60ch;
+  }
+  .footer-brand{
+    font-family: "Archivo Black", sans-serif;
+    font-size: 0.95rem;
+    color: var(--text-dim);
+  }
+
+  /* ---------- floating social rail ---------- */
+  .social-rail{
+    position: fixed;
+    right: clamp(14px, 3vw, 28px);
+    bottom: clamp(18px, 4vw, 32px);
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .social-btn{
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(20,24,26,0.82);
+    border: 1.5px solid rgba(244,241,234,0.35);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  }
+  .social-btn svg{ width: 22px; height: 22px; stroke: var(--text); fill:none; stroke-width: 1.7; }
+  .social-btn:hover{
+    transform: translateY(-3px);
+    border-color: var(--accent-strong);
+    background: rgba(43,108,255,0.22);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal{ opacity: 1; transform: none; transition: none; }
+    .route-path{ transition: none; stroke-dashoffset: 0; }
+    .hero-watermark span{ transform: none !important; }
+    .btn:hover, .service-card:hover, .social-btn:hover{ transform: none; }
+  }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@400;500;600&family=Work+Sans:wght@400;500;600;700&display=swap">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand">LOVRENČIĆ <span>TRANS</span></div>
+    <a class="header-cta" href="tel:+385912345678" id="header-call">
+      <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      Nazovi odmah
+    </a>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="hero-watermark" aria-hidden="true"><span id="watermark-text">OSIJEK</span></div>
+    <div class="wrap">
+      <div class="section-inner">
+        <p class="eyebrow">OBRT ZA PRIJEVOZ I SELIDBE · OSIJEK</p>
+        <h1>Selidbe i prijevoz na koje se možete osloniti</h1>
+        <p class="hero-sub">Od jedne kutije do cijelog kućanstva — Danijel i ekipa dolaze na vrijeme, pažljivo utovare i sigurno dovezu. Bez sitnog printa, bez iznenađenja na kraju.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="tel:+385912345678">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Nazovi odmah
+          </a>
+          <a class="btn btn-ghost" href="https://wa.me/385912345678?text=Pozdrav%2C%20zanima%20me%20ponuda%20za%20prijevoz%2Fselidbu." target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            Upit na WhatsApp
+          </a>
+        </div>
+        <div class="rating-badge">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          4.9 / 5 na Google recenzijama <span class="demo-tag">DEMO</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="usluge">
+    <div class="wrap">
+      <div class="section-inner">
+        <div class="section-head reveal">
+          <p class="eyebrow">USLUGE</p>
+          <h2>Što vozimo i kako pomažemo</h2>
+          <p class="section-note">Okvirni popis usluga <span class="demo-tag">DEMO</span> — konačan popis i cijene potvrđuje Danijel prije objave.</p>
+        </div>
+        <div class="service-grid">
+
+          <div class="service-card reveal">
+            <svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="12" rx="0"/><path d="M3 8l3-5h12l3 5"/><path d="M3 8h18"/><path d="M9 3v5"/><path d="M15 3v5"/></svg>
+            <h3>Selidbe stanova i kuća</h3>
+            <p>Kompletna selidba domaćinstva — pakiranje, utovar, prijevoz i istovar na novoj adresi.</p>
+          </div>
+
+          <div class="service-card reveal">
+            <svg viewBox="0 0 24 24"><path d="M3 20V9l9-6 9 6v11"/><path d="M9 20v-7h6v7"/></svg>
+            <h3>Prijevoz namještaja</h3>
+            <p>Sigurna dostava kauča, ormara i bijele tehnike, s opremom za zaštitu od udaraca i ogrebotina.</p>
+          </div>
+
+          <div class="service-card reveal">
+            <svg viewBox="0 0 24 24"><rect x="2" y="7" width="14" height="10" rx="0"/><path d="M16 10h3l3 3v4h-6"/><circle cx="6" cy="19" r="1.6"/><circle cx="17" cy="19" r="1.6"/></svg>
+            <h3>Kombi prijevoz robe</h3>
+            <p>Manji i veći tereti unutar Osijeka i okolice — za obrte, trgovine i privatne narudžbe.</p>
+          </div>
+
+          <div class="service-card reveal">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+            <h3>Brza / hitna dostava</h3>
+            <p>Prijevoz istog dana kad treba nešto prevesti odmah, bez čekanja na termin sljedeći tjedan.</p>
+          </div>
+
+          <div class="service-card reveal">
+            <svg viewBox="0 0 24 24"><path d="M4 20V8h6v12"/><path d="M10 20V4h6v16"/><path d="M2 20h20"/></svg>
+            <h3>Utovar i istovar s ekipom</h3>
+            <p>Dvoje do troje ljudi po potrebi, s remenjem i kolicima za teže i nezgrapne komade.</p>
+          </div>
+
+          <div class="service-card reveal">
+            <svg viewBox="0 0 24 24"><path d="M3 12h4l2-4 4 8 2-4h6"/></svg>
+            <h3>Domaći transport</h3>
+            <p>Relacije diljem Hrvatske po dogovoru — Osijek kao polazna točka za širu regiju.</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="kako-radimo">
+    <div class="wrap">
+      <div class="section-inner">
+        <div class="section-head reveal">
+          <p class="eyebrow">KAKO RADIMO</p>
+          <h2>Od upita do gotove selidbe</h2>
+        </div>
+        <div class="process-list reveal">
+          <div class="process-step">
+            <span class="process-num mono">01</span>
+            <h3>Upit</h3>
+            <p>Javite se pozivom ili na WhatsApp i opišite što i kamo treba prevesti.</p>
+          </div>
+          <div class="process-step">
+            <span class="process-num mono">02</span>
+            <h3>Procjena</h3>
+            <p>Dogovaramo opseg posla, broj ljudi i okvirnu cijenu — bez skrivenih troškova.</p>
+          </div>
+          <div class="process-step">
+            <span class="process-num mono">03</span>
+            <h3>Termin</h3>
+            <p>Rezerviramo datum i vrijeme koje vama odgovara, uključujući vikende.</p>
+          </div>
+          <div class="process-step">
+            <span class="process-num mono">04</span>
+            <h3>Izvršenje</h3>
+            <p>Dolazimo na vrijeme, sve pažljivo utovarimo, prevezemo i istovarimo.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="zasto-mi">
+    <div class="wrap">
+      <div class="section-inner">
+        <div class="section-head reveal">
+          <p class="eyebrow">ZAŠTO MI</p>
+          <h2>Brojke koje stoje iza posla</h2>
+          <p class="trust-banner section-note">Prikazane brojke su okvirne <span class="demo-tag">DEMO PODACI</span> — zamijeniti stvarnima nakon potvrde s Danijelom.</p>
+        </div>
+        <div class="trust-grid reveal">
+          <div class="trust-tile">
+            <div class="trust-num" data-count="10" data-suffix="+">0</div>
+            <div class="trust-label">Godina iskustva</div>
+          </div>
+          <div class="trust-tile">
+            <div class="trust-num" data-count="6" data-suffix="">0</div>
+            <div class="trust-label">Vozila u voznom parku</div>
+          </div>
+          <div class="trust-tile">
+            <div class="trust-num" data-count="300" data-suffix="+">0</div>
+            <div class="trust-label">Obavljenih selidbi</div>
+          </div>
+          <div class="trust-tile">
+            <div class="trust-num" data-count="60" data-suffix="km">0</div>
+            <div class="trust-label">Radijus oko Osijeka</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="podrucje">
+    <div class="wrap">
+      <div class="section-inner coverage-wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">PODRUČJE RADA</p>
+          <h2>Osijek i cijela Slavonija</h2>
+          <p class="section-note">Gradovi i regije koje redovito pokrivamo <span class="demo-tag">DEMO</span> — potvrditi konačan popis.</p>
+        </div>
+        <svg class="route-svg reveal" viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true">
+          <path id="route-path" class="route-path" d="M10,45 C150,10 250,55 400,30 S650,10 800,40 S950,50 990,20"/>
+          <circle class="route-dot" cx="10" cy="45" r="5"/>
+          <circle class="route-dot" cx="990" cy="20" r="5"/>
+        </svg>
+        <div class="chip-row reveal">
+          <span class="chip">Osijek</span>
+          <span class="chip">Đakovo</span>
+          <span class="chip">Valpovo</span>
+          <span class="chip">Našice</span>
+          <span class="chip">Vinkovci</span>
+          <span class="chip">Vukovar</span>
+          <span class="chip">Slavonski Brod</span>
+          <span class="chip">Županja</span>
+          <span class="chip">+ šira Slavonija, po dogovoru</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="kontakt">
+    <div class="wrap">
+      <div class="section-inner">
+        <div class="section-head reveal">
+          <p class="eyebrow">KONTAKT</p>
+          <h2>Javite se za termin ili upit</h2>
+          <p class="section-note">Telefon i email su privremeni <span class="demo-tag">DEMO</span> podaci — zamijeniti stvarnima prije slanja stranice klijentu.</p>
+        </div>
+        <div class="contact-grid reveal">
+          <div class="contact-card">
+            <div class="contact-row">
+              <div>
+                <div class="contact-label">Telefon</div>
+                <div class="contact-value">+385 91 234 5678</div>
+              </div>
+              <button class="copy-btn" data-copy="+385 91 234 5678">Kopiraj</button>
+            </div>
+            <div class="contact-row">
+              <div>
+                <div class="contact-label">Email</div>
+                <div class="contact-value">info@lovrencic-trans.hr</div>
+              </div>
+              <button class="copy-btn" data-copy="info@lovrencic-trans.hr">Kopiraj</button>
+            </div>
+            <div class="contact-row">
+              <div>
+                <div class="contact-label">Sjedište</div>
+                <div class="contact-value">Osijek, Hrvatska</div>
+              </div>
+            </div>
+          </div>
+          <div class="hours-card">
+            <div class="contact-label">Radno vrijeme <span class="demo-tag">DEMO</span></div>
+            <div class="hours-row"><span>Pon – Pet</span><b>07:00 – 19:00</b></div>
+            <div class="hours-row"><span>Subota</span><b>08:00 – 15:00</b></div>
+            <div class="hours-row"><span>Nedjelja</span><b>po dogovoru</b></div>
+            <div class="contact-ctas" style="margin-top:8px;">
+              <a class="btn btn-primary" href="https://wa.me/385912345678?text=Pozdrav%2C%20zanima%20me%20ponuda%20za%20prijevoz%2Fselidbu." target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                WhatsApp upit
+              </a>
+              <a class="btn btn-ghost" href="tel:+385912345678">Nazovi odmah</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div class="footer-brand">LOVRENČIĆ TRANS</div>
+    <p class="footer-note">Podaci označeni <span class="demo-tag">DEMO</span> su privremeni placeholderi za prikaz izgleda stranice — zamijeniti stvarnim uslugama, brojkama i kontaktima prije slanja klijentu.</p>
+  </div>
+</footer>
+
+<div class="social-rail">
+  <a class="social-btn" href="https://wa.me/385912345678" target="_blank" rel="noopener" title="WhatsApp">
+    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+  </a>
+  <a class="social-btn" href="https://facebook.com" target="_blank" rel="noopener" title="Facebook (DEMO poveznica)">
+    <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h-2a5 5 0 0 0-5 5v2H6v4h2v7h4v-7h3l1-4h-4V8a1 1 0 0 1 1-1h3z"/></svg>
+  </a>
+</div>
+
+<script>
+(function(){
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // reveal on scroll
+  var revealEls = document.querySelectorAll(".reveal");
+  if("IntersectionObserver" in window && !reduceMotion){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add("in-view");
+          io.unobserve(entry.target);
+        }
+      });
+    }, {threshold: 0.15});
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add("in-view"); });
+  }
+
+  // route line draw
+  var routePath = document.getElementById("route-path");
+  if(routePath){
+    if("IntersectionObserver" in window && !reduceMotion){
+      var ioRoute = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){
+            entry.target.classList.add("in-view");
+            ioRoute.unobserve(entry.target);
+          }
+        });
+      }, {threshold: 0.3});
+      ioRoute.observe(routePath);
+    } else {
+      routePath.classList.add("in-view");
+    }
+  }
+
+  // count-up stats
+  var counters = document.querySelectorAll(".trust-num");
+  function animateCount(el){
+    var target = parseInt(el.getAttribute("data-count"), 10) || 0;
+    var suffix = el.getAttribute("data-suffix") || "";
+    if(reduceMotion){
+      el.textContent = target + suffix;
+      return;
+    }
+    var duration = 1100;
+    var start = null;
+    function step(ts){
+      if(start === null) start = ts;
+      var progress = Math.min((ts - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(eased * target) + suffix;
+      if(progress < 1){ requestAnimationFrame(step); }
+    }
+    requestAnimationFrame(step);
+  }
+  if("IntersectionObserver" in window){
+    var ioCount = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          animateCount(entry.target);
+          ioCount.unobserve(entry.target);
+        }
+      });
+    }, {threshold: 0.5});
+    counters.forEach(function(el){ ioCount.observe(el); });
+  } else {
+    counters.forEach(animateCount);
+  }
+
+  // subtle parallax on hero watermark
+  var watermark = document.getElementById("watermark-text");
+  if(watermark && !reduceMotion){
+    var ticking = false;
+    window.addEventListener("scroll", function(){
+      if(!ticking){
+        requestAnimationFrame(function(){
+          var y = window.scrollY || 0;
+          watermark.style.transform = "translateY(" + Math.min(y * 0.12, 60) + "px)";
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, {passive: true});
+  }
+
+  // copy buttons
+  document.querySelectorAll(".copy-btn").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var value = btn.getAttribute("data-copy") || "";
+      var done = function(){
+        var original = btn.textContent;
+        btn.textContent = "Kopirano!";
+        btn.setAttribute("data-copied", "true");
+        setTimeout(function(){
+          btn.textContent = original;
+          btn.removeAttribute("data-copied");
+        }, 1600);
+      };
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(value).then(done).catch(function(){
+          fallbackCopy(value); done();
+        });
+      } else {
+        fallbackCopy(value); done();
+      }
+    });
+  });
+  function fallbackCopy(text){
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.focus(); ta.select();
+    try{ document.execCommand("copy"); }catch(e){}
+    document.body.removeChild(ta);
+  }
+})();
+</script>
+</body>
+</html>
